@@ -65,3 +65,8 @@ class BudgetManager:
 
     def status(self) -> dict[str, float]:
         return {"spent": self.spent, "remaining": self.remaining, "cap": self.cap_seconds}
+
+    def calibrate(self, usage_seconds: float, shots: int) -> None:
+        if usage_seconds < 0 or shots <= 0:
+            raise ValueError("usage and shots must be positive")
+        self.calibration_seconds = usage_seconds / (shots / 1000)

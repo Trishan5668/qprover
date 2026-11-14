@@ -42,7 +42,26 @@ runner returns a structured `error`; it never treats unavailable Lean as success
 
 The current offline simulator is a deterministic reference sampler used to make
 the pipeline testable without credentials; it is not evidence of quantum
-advantage. IBM Runtime API details can vary by installed Qiskit 2.x/runtime
+advantage. The local path builds and optimizes a real QAOA circuit with Aer,
+while hardware execution is isolated behind Runtime mocks and explicit
+confirmation. IBM Runtime API details can vary by installed Qiskit 2.x/runtime
 release, so hardware execution must be validated against the installed package
 before a benchmark. Every experiment should publish proof attempts, Lean output,
 energy gap, diversity, wall time, and QPU seconds.
+
+## Evaluation snapshot
+
+The evaluation table compares equal candidate counts and reports negative
+results rather than implying an advantage:
+
+| Method | Energy gap | Diversity | Proof success@k | QPU seconds |
+|---|---:|---:|---:|---:|
+| Greedy | 0.00 | 1 | measured by Lean | 0 |
+| Simulated annealing | instance-dependent | 1 | measured by Lean | 0 |
+| Random | instance-dependent | 1 | measured by Lean | 0 |
+| QAOA (Aer/hardware) | instance-dependent | measured | measured by Lean | measured |
+
+No quantum advantage or speedup is claimed. On small instances exact and
+classical methods can match or beat QAOA; hardware noise, queue time, and
+transpilation overhead can make the quantum result worse. `evaluate.py`
+produces the comparable table and a matplotlib energy plot for each run.

@@ -41,7 +41,9 @@ class LeanRunner:
         except FileNotFoundError:
             return LeanResult("error", "", "Lean executable not found", time.monotonic() - start, ("Lean unavailable",))
         except subprocess.TimeoutExpired as exc:
-            return LeanResult("timeout", exc.stdout or "", exc.stderr or "", time.monotonic() - start, ("timeout",))
+            stdout = exc.stdout.decode(errors="replace") if isinstance(exc.stdout, bytes) else (exc.stdout or "")
+            stderr = exc.stderr.decode(errors="replace") if isinstance(exc.stderr, bytes) else (exc.stderr or "")
+            return LeanResult("timeout", stdout, stderr, time.monotonic() - start, ("timeout",))
         messages = tuple(line for line in (result.stdout + "\n" + result.stderr).splitlines() if line.strip())
         return LeanResult("ok" if result.returncode == 0 and not any("error:" in m for m in messages) else "error",
                           result.stdout, result.stderr, time.monotonic() - start, messages)
