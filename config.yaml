@@ -1,0 +1,13 @@
+backend: null
+min_qubits: 127
+problem_qubits: 20
+p: 1
+shots: 4096
+budget_cap_seconds: 540.0
+job_mode: true
+hardware_confirm_required: true
+depth_limit: 150
+lean_timeout_seconds: 30.0
+seed: 7
+llm_endpoint: null
+
